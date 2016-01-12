@@ -22,13 +22,31 @@ class AddressBook
     @entries.insert(index, Entry.new(name, phone, email))
   end
 
-  def import_from_csv(file_name)
-    csv_text = File.read(file_name)
-    csv = CSV.parse(csv_text, headers: true, skip_blanks: true)
+  def add_entry2(city, state, country)
+    index = 0
+    @entries.each do |entry|
+
+      if name < entry.name
+        break
+      end
+      index += 1
+    end
+
+    @entries.insert(index, Entry2.new(city, state, country))
+ end
+
+ def import_from_csv(file_name)
+   csv_text = File.read(file_name)
+   csv = CSV.parse(csv_text, headers: true, skip_blanks: true)
     # #8
-    csv.each do |row|
-      row_hash = row.to_hash
-      add_entry(row_hash["name"], row_hash["phone_number"], row_hash["email"])
-    end    
+   csv.each do |row|
+     row_hash = row.to_hash
+     add_entry(row_hash["name"], row_hash["phone_number"], row_hash["email"])
+   end
+
+   csv.each do |row|
+     row_hash = row.to_hash
+     add_entry2(row_hash["city"], row_hash["state"], row_hash["country"])
+   end
   end
 end

@@ -10,6 +10,13 @@ RSpec.describe AddressBook do
     expect(entry.email).to eql expected_email
   end
 
+  def check_entry2(entry2, expected_city, expected_state, expected_country)
+    expect(entry2.city).to eql expected_city
+    expect(entry2.state).to eql expected_state
+    expect(entry2.country).to eql expected_country
+  end
+
+
   context "attributes" do
     it "should respond to entries" do
       expect(book).to respond_to(:entries)
@@ -39,6 +46,23 @@ RSpec.describe AddressBook do
       expect(new_entry.name).to eq 'Ada Lovelace'
       expect(new_entry.phone_number).to eq '010.012.1815'
       expect(new_entry.email).to eq 'augusta.king@lovelace.com'
+    end
+  end
+
+  context "#add_entry2" do
+    it "adds only one entry to the address book" do
+      book.add_entry2('Atlanta', 'Ga', 'USA')
+
+      expect(book.entries.size).to eq 1
+    end
+
+    it "adds the correct information to entries" do
+      book.add_entry2('Atlanta', 'Ga', 'USA')
+      new_entry2 = book.entries[0]
+
+      expect(new_entry2.city).to eq 'Atlanta'
+      expect(new_entry2.state).to eq 'Ga'
+      expect(new_entry2.country).to eq 'USA'
     end
   end
 
@@ -89,8 +113,37 @@ RSpec.describe AddressBook do
       entry_five = book.entries[4]
       check_entry(entry_five, "Sussie", "555-555-2036", "sussie@blocmail.com")
     end
-
-
   end
 
+  context ".import_from_csv" do
+    it "imports the correct number of entries" do
+        # #3
+      book.import_from_csv("entries_2.csv")
+      book_size = book.entries.size
+
+        # Check the size of the entries in AddressBook
+      expect(book_size).to eql 3
+    end
+
+    it "imports the 1st entry" do
+      book.import_from_csv("entries_2.csv")
+      # Check the fifth entry
+      entry_one = book.entries[0]
+      check_entry(entry_one, "Atlanta", "Ga", "USA")
+    end
+
+    it "imports the 2nd entry" do
+      book.import_from_csv("entries_2.csv")
+        # Check the fifth entry
+      entry_two = book.entries[1]
+      check_entry(entry_two, "Austin", "Tx", "USA")
+    end
+
+    it "imports the 3rd entry" do
+      book.import_from_csv("entries_2.csv")
+      # Check the fifth entry
+      entry_three = book.entries[2]
+      check_entry(entry_three, "Baltimore", "Md", "USA")
+    end
+  end
 end
