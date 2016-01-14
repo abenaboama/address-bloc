@@ -114,7 +114,7 @@ class MenuController
       puts entry.to_s
       search_submenu(entry)
     end
-  end  
+  end
 
   def read_csv
     print "Enter CSV file to import: "
@@ -166,6 +166,11 @@ class MenuController
   def delete_entry(entry)
     @address_book.entries.delete(entry)
     puts "#{entry.name} has been deleted"
+  end
+
+  def demolish_entry(entry)
+    @address_book.entries.delete_all(entry)
+    puts "#{entry.all} has been deleted"
   end
 
   def edit_entry(entry)
